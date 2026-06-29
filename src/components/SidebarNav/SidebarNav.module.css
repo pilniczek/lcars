@@ -1,0 +1,52 @@
+@layer components {
+  /* Active route button: inverted (black bg, accent text + frame). In the
+     `components` layer so its !important beats the bgcolor-* utilities. */
+  .active {
+    background-color: var(--lcars-background) !important;
+    color: var(--active-accent) !important;
+    /* Centre the text within the framed active button. */
+    justify-content: center;
+    padding-top: 0;
+  }
+
+  /* Frame drawn as a pseudo-element; right edge inset 34px to clear the black
+     notch painted by .sidebar-bottom::after. */
+  .active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 34px;
+    bottom: 0;
+    left: 0;
+    border: 2px solid var(--active-accent);
+    pointer-events: none;
+  }
+
+  :global(.bgcolor-1).active {
+    --active-accent: var(--lcars-color-a1);
+  }
+  :global(.bgcolor-2).active {
+    --active-accent: var(--lcars-color-a2);
+  }
+  :global(.bgcolor-3).active {
+    --active-accent: var(--lcars-color-a3);
+  }
+  :global(.bgcolor-4).active {
+    --active-accent: var(--lcars-color-a4);
+  }
+  :global(.bgcolor-5).active {
+    --active-accent: var(--lcars-color-a5);
+  }
+  :global(.bgcolor-6).active {
+    --active-accent: var(--lcars-color-a6);
+  }
+  :global(.bgcolor-7).active {
+    --active-accent: var(--lcars-color-a7);
+  }
+  :global(.bgcolor-8).active {
+    --active-accent: var(--lcars-color-a8);
+  }
+  :global(.bgcolor-9).active {
+    --active-accent: var(--lcars-color-a9);
+  }
+}

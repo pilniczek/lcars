@@ -1,0 +1,18 @@
+<blockquote>
+<p>💡 <code>git push</code> alone always pushes the current branch to its tracked remote counterpart - even on the very first push. No <code>-u</code>, no typing the branch name.</p>
+</blockquote>
+<h2 id="the-problem">The problem</h2>
+<p>Default git on a brand-new branch:</p>
+<pre><code class="language-text">$ git push
+fatal: The current branch fix/login has no upstream branch.
+    use git push --set-upstream origin fix/login
+</code></pre>
+<p>Friction every time you start a branch.</p>
+<h2 id="what-the-settings-do">What the settings do</h2>
+<pre><code class="language-ini">[remote &quot;origin&quot;]
+    push = HEAD
+</code></pre>
+<p>Now <code>git push</code> pushes HEAD to a remote branch of the same name, creating it on first push. Pairs with <code>push.default = current</code> from the same template.</p>
+<p>See <a href="/git/config/configuration-example">Config Example</a>.</p>
+<h2 id="when-this-isnt-enough">When this isn&#39;t enough</h2>
+<p>If you work with multiple remotes (e.g. <code>origin</code> + <code>upstream</code> fork), repeat the refspec on each remote you push to. Docs: <a href="https://git-scm.com/docs/git-config#Documentation/git-config.txt-remoteltnamegtpush">https://git-scm.com/docs/git-config#Documentation/git-config.txt-remoteltnamegtpush</a></p>

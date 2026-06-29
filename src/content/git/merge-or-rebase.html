@@ -1,0 +1,36 @@
+<p>Rebase is one mechanism with two everyday uses. The first half below covers GIT bringing
+two branches together (merge, or rebase as integration); the second half covers rebase used
+purely as a history editor on your own branch.</p>
+
+<h2 id="branches-together">Branches together: merge and rebase as integration</h2>
+
+<p>Joining two branches. Merge ties them with a merge commit; rebase replays your branch on top
+of the other to keep history linear. This moves where your branch starts.</p>
+
+<h3 id="fast-forward-merge">Fast-forward (ff) merge</h3>
+<img src="/git-assets/merge-or-rebase-01-fast-forward.gif" alt="Fast-forward merge animation">
+
+<h3 id="no-fast-forward-merge">No-fast-forward (--no-ff) merge</h3>
+<img src="/git-assets/merge-or-rebase-02-no-ff.gif" alt="No-fast-forward merge animation">
+
+<h3 id="merge-conflicts">Merge conflicts</h3>
+<img src="/git-assets/merge-or-rebase-03-merge-conflicts.png" alt="Merge conflict markers in a file">
+
+<h3 id="resolving-a-merge-conflict">Resolving a merge conflict</h3>
+<img src="/git-assets/merge-or-rebase-04-resolve-conflict.gif" alt="Resolving a merge conflict animation">
+
+<h3 id="rebasing">Rebasing onto another branch</h3>
+<img src="/git-assets/merge-or-rebase-05-rebase.gif" alt="Rebasing animation">
+
+<h2 id="history-editor">History editor: interactive rebase on your own branch</h2>
+
+<p>Here you are not integrating another branch, you are editing your own commits before sharing them:
+reorder, squash, fixup, reword, or drop. Run with <code>git rebase -i</code>.</p>
+
+<h3 id="interactive-rebase-drop">Interactive rebase - drop</h3>
+<img src="/git-assets/merge-or-rebase-06-interactive-drop.gif" alt="Interactive rebase dropping a commit animation">
+
+<h3 id="interactive-rebase-squash">Interactive rebase - squash</h3>
+<img src="/git-assets/merge-or-rebase-07-interactive-squash.gif" alt="Interactive rebase squashing commits animation">
+
+<p>GIF visualizations by Lydia Hallie, from <a href="https://dev.to/lydiahallie/cs-visualized-useful-git-commands-37p1">CS Visualized: Useful GIT Commands</a>.</p>

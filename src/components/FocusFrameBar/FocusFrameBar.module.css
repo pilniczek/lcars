@@ -1,0 +1,106 @@
+@layer components {
+  /* mobile default sizing */
+  .bar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 24px;
+    gap: 0.25rem; /* was space-x-1 */
+    line-height: 1; /* was leading-none */
+  }
+
+  .bar > div,
+  .bar > button {
+    background-color: #c9c; /* TODO: dynamic colors */
+  }
+
+  /* Mobile menu opener: a "MENU" text button typeset like the bar label so it
+     matches the bar's look while staying tappable. Native chrome is stripped;
+     the reset's transparent button background is exactly what we want here. */
+  .menu {
+    display: flex;
+    align-items: center;
+    appearance: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  /* The MENU opener belongs to the XS layout only - it opens the MobileNav wheel,
+     which is itself hidden at SM. Hide it on desktop so the simple layout shows no
+     menu (navigation is the call-to-action pills instead). Mirrors
+     `:global(.screen.SM) .overlay` in MobileNav.module.css. */
+  :global(.screen.SM) .menu {
+    display: none;
+  }
+
+  /* The h2 carries default block margins that would push it off-centre in the
+     flex bar; the trimmed text box (below) handles the vertical fit. */
+  .label {
+    margin: 0;
+  }
+
+  /* The colour lives on the span (not the button) so it survives the reset's
+     `button { color: inherit }`. Shares the label's size/transform.
+
+     text-box trims the line box to the cap height so the text sits inside the
+     bar instead of overflowing it (the lcars UltraComp font seats glyphs high in
+     the line box). This mirrors LCARSBar's .barText/.barMenu treatment and keeps
+     the title and MENU opener aligned to the same vertical position. */
+  .label,
+  .menu span {
+    font-size: 33px;
+    line-height: 1;
+    text-box: trim-both cap alphabetic;
+    color: #f93; /* TODO: dynamic colors */
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .spacer {
+    flex-grow: 1; /* was grow */
+  }
+
+  .cap {
+    width: 1.25rem; /* was w-5 */
+  }
+
+  .capLeft {
+    border-top-left-radius: 9999px; /* was rounded-l-full */
+    border-bottom-left-radius: 9999px;
+  }
+
+  .capRight {
+    border-top-right-radius: 9999px; /* was rounded-r-full */
+    border-bottom-right-radius: 9999px;
+  }
+
+  /* sm breakpoint */
+  @media (min-width: 640px) {
+    .bar {
+      height: 32px;
+      gap: 0.375rem; /* was sm:space-x-1.5 */
+    }
+    .label,
+    .menu span {
+      font-size: 44px;
+    }
+    .cap {
+      width: 1.5rem; /* was sm:w-6 */
+    }
+  }
+
+  /* md breakpoint */
+  @media (min-width: 768px) {
+    .bar {
+      height: 40px;
+    }
+    .label,
+    .menu span {
+      font-size: 56px;
+    }
+    .cap {
+      width: 2rem; /* was md:w-8 */
+    }
+  }
+}

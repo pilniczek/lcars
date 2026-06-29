@@ -1,0 +1,36 @@
+@layer components {
+  .redAlert {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    animation: redAlertPulse 1.2s ease-in-out infinite;
+  }
+
+  .redAlertText {
+    color: #ff3b30;
+    font-size: clamp(2.5rem, 12vw, 9rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-shadow: 0 0 1rem #ff3b30, 0 0 2.5rem #ff0a00;
+  }
+
+  @keyframes redAlertPulse {
+    0%,
+    100% {
+      background: radial-gradient(circle at center, rgba(255, 59, 48, 0) 60%, rgba(255, 10, 0, 0) 100%);
+    }
+    50% {
+      background: radial-gradient(circle at center, rgba(255, 59, 48, 0.18) 40%, rgba(255, 10, 0, 0.45) 100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .redAlert {
+      animation: none;
+    }
+  }
+}

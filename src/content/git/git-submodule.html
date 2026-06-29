@@ -1,0 +1,21 @@
+<blockquote>
+<p>💡 A submodule embeds another git repo inside yours at a <strong>pinned commit</strong>. The parent records <em>which commit</em> of the child to use - not its contents - so clone/pull don&#39;t fetch submodule code unless you ask.</p>
+</blockquote>
+<h2 id="when-to-reach-for-one">When to reach for one</h2>
+<p>Shared code that lives in its own repo and must stay versioned independently - a design system, a vendored library, shared config. If you just want the latest of a package, use the package manager instead: submodules pin a commit, not a version range.</p>
+<h2 id="the-commands">The commands</h2>
+<pre><code class="language-sh"># add a submodule
+git submodule add &lt;repo-url&gt; path/to/sub
+
+# clone a project that has submodules (one step)
+git clone --recurse-submodules &lt;repo-url&gt;
+
+# already cloned without it? fetch the submodule contents
+git submodule update --init --recursive
+
+# pull parent + update submodules to the recorded commits
+git pull --recurse-submodules
+</code></pre>
+<h2 id="the-gotcha">The gotcha</h2>
+<p>A submodule checks out a <strong>specific commit</strong>, not a branch - so it sits in <a href="https://pilniczek.github.io/important/detached-head">detached HEAD</a>. To move it forward: <code>cd</code> into the submodule, <code>git checkout main &amp;&amp; git pull</code>, then commit the new pointer <strong>in the parent repo</strong> (<code>git add path/to/sub &amp;&amp; git commit</code>). Forgetting that second commit is the #1 &quot;works on my machine&quot; submodule bug.</p>
+<p>See <a href="https://pilniczek.github.io/important/git">GIT</a>.</p>

@@ -1,0 +1,48 @@
+/* SETTINGS — design tokens, no CSS output beyond custom properties */
+:root {
+  /* Doug Drexler reference colors */
+  --lcars-color-a1: #ec943a;
+  --lcars-color-a2: #eb9870;
+  --lcars-color-a3: #c47d69;
+  --lcars-color-a4: #d29a7f;
+  --lcars-color-a5: #faa41b;
+  --lcars-color-a6: #c082a9;
+  --lcars-color-a7: #9c698a;
+  --lcars-color-a8: #b6a5d1;
+  --lcars-color-a9: #8b72aa;
+
+  /* extrapolated */
+  --lcars-color-ex1: #b73916; /* pointer blinking, warp field output */
+
+  /* old colors - do not use */
+  --lcars-color-b1: #ffff99;
+  --lcars-color-b2: #ffcc66;
+  --lcars-color-b3: #ff9933;
+  --lcars-color-b4: #664466;
+  --lcars-color-b5: #cc99cc;
+  --lcars-color-b6: #99ccff;
+  --lcars-color-black: #090909;
+
+  /* Neutral light grey for article body text on the black content pane. */
+  --lcars-text: #cfcdd4;
+
+  /* Article link colors on the black content pane. */
+  --lcars-link: #99ccff;                     /* light blue, ~12:1 contrast on #090909 */
+  --lcars-link-hover: var(--lcars-color-a5); /* LCARS amber #faa41b */
+
+  --lcars-gap: 10px;
+  --lcars-sidebar-width: 150px;
+  --lcars-top-section-height: 215px;
+  --lcars-title-size: 50px;
+  --lcars-sm-title-size: 36px;
+  --lcars-xs-title-size: 24px;
+  --lcars-divider-top-height: 16px;
+  --lcars-divider-bottom-height: 16px;
+
+  --lcars-block-gap: 5px;
+  --lcars-background: var(--lcars-color-black);
+
+  /* Scrollbar (thumb / track) tuned for the dark content pane. */
+  --lcars-scrollbar-thumb: #5a5862;
+  --lcars-scrollbar-track: var(--lcars-background); /* #090909 */
+}

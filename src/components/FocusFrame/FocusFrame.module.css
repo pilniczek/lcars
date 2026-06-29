@@ -1,0 +1,33 @@
+@layer components {
+  .transmissionContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    /* Screen-edge padding mirroring .lcars-type-01 so the simple layout's
+       frame is inset from the viewport just like the header+menu layout. */
+    padding: 10px;
+  }
+  @media screen and (min-width: 1024px) and (min-height: 1024px) {
+    .transmissionContainer {
+      padding: 20px;
+    }
+  }
+  .frameBar {
+    width: 100%;
+  }
+  .transmissionContainer .transmissionBody {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    padding: 40px;
+  }
+}

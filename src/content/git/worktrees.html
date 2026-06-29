@@ -1,0 +1,45 @@
+<h2 id="what-a-git-worktree-is">What a GIT Worktree Is</h2>
+<p>A git worktree is &quot;a separate working directory that shares the same <code>.git</code> history and remote, but sits on its own branch to avoid interruptions.&quot;</p>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>One branch, one worktree.</strong> Git prevents checking out identical branches across multiple worktrees simultaneously, preventing accidental conflicts.</li>
+<li><strong>It&#39;s a fresh checkout.</strong> Dependencies and environment files must be reinstalled in the new directory.</li>
+<li><strong>They stay linked.</strong> Worktrees remain connected through git tracking, allowing operations like rebasing to function normally.</li>
+</ul>
+<h2 id="core-git-commands">Core Git Commands</h2>
+<pre><code class="language-sh"># create a worktree on a NEW branch, in a sibling folder
+git worktree add ../repo-hotfix -b hotfix
+
+# ...or check out an EXISTING branch (omit -b)
+git worktree add ../repo-hotfix hotfix
+
+git worktree list          # show every worktree and the branch each holds
+git worktree remove ../repo-hotfix   # delete when done (cleans up dir + metadata)
+</code></pre>
+<blockquote>
+<p>Manually deleting worktree folders leaves stale metadata. Use <code>git worktree remove</code> instead, which handles cleanup completely.</p>
+</blockquote>
+<h2 id="claude-codes-built-in-worktrees">Claude Code&#39;s Built-in Worktrees</h2>
+<pre><code class="language-sh">claude --worktree feature-auth   # or -w; start Claude in an isolated worktree
+claude --worktree                # omit the name → auto-named, e.g. bright-running-fox
+claude --worktree &quot;#1234&quot;      # branch from a GitHub PR
+</code></pre>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Worktrees are created under <code>.claude/worktrees/&lt;name&gt;/</code> on a new branch <code>worktree-&lt;name&gt;</code></li>
+<li>Add <code>.claude/worktrees/</code> to <code>.gitignore</code></li>
+<li>Mid-session creation via the <code>EnterWorktree</code> tool</li>
+<li>Use <code>.worktreeinclude</code> to copy gitignored files into worktrees</li>
+<li>Set <code>isolation: worktree</code> in subagent frontmatter for parallel work</li>
+<li>Clean worktrees auto-remove on exit; dirty ones prompt for removal</li>
+</ul>
+<blockquote>
+<p>Set <code>worktree.baseRef</code> to <code>&quot;head&quot;</code> in settings to start from unpushed local work.</p>
+</blockquote>
+<h2 id="resources">Resources</h2>
+<ul>
+<li><a href="https://git-scm.com/docs/git-worktree">Git worktree documentation</a></li>
+<li><a href="https://code.claude.com/docs/en/worktrees">Claude Code worktrees guide</a></li>
+<li><a href="https://www.youtube.com/watch?v=yv8VZpov8bk">Video: You need to use Git Worktrees</a></li>
+<li><a href="https://www.youtube.com/watch?v=oI631eCAQnQ">Video: Claude worktree workflow</a></li>
+</ul>

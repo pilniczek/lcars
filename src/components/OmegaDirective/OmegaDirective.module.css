@@ -1,0 +1,15 @@
+@layer components {
+  .omegaDirectiveSymbol {
+    padding: 4%;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .omegaDirectiveSymbol svg {
+    fill: #9cf;
+    height: 100%;
+  }
+}

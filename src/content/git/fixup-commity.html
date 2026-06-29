@@ -1,0 +1,19 @@
+<h2 id="how-fixup-commits-work">How fixup commits work</h2>
+<p><code>--fixup</code> tags a commit to be folded into an earlier one; <code>--autosquash</code> does the folding during rebase - no messages to write, history stays clean.</p>
+<pre><code class="language-bash"># attach a fix to an earlier commit (makes a "fixup!" commit)
+git commit --fixup abc1234
+
+# reorder and fold every fixup! into its target
+git rebase -i --autosquash &lt;base&gt;
+
+# make --autosquash the default
+git config --global rebase.autoSquash true
+</code></pre>
+<p>You never write a message yourself. GIT copies the target commit's subject verbatim and prefixes it with <code>fixup! </code>, so a fix attached to a commit titled <code>Add login form</code> looks like this:</p>
+<pre><code class="language-bash"># the commit GIT creates for you
+fixup! Add login form
+</code></pre>
+<p>That <code>fixup! </code> prefix is exactly what <code>--autosquash</code> matches on to find the target during rebase.</p>
+<blockquote>
+<p>💡 Never merge a stray <code>fixup!</code> commit - if it reaches the target branch, the squash never happened.</p>
+</blockquote>

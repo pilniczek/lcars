@@ -1,0 +1,476 @@
+/* OBJECTS — the LCARS page layout scaffolding.
+   Global (not CSS Modules) because it is keyed off the `.screen` / breakpoint
+   classes that the ResizeObserver toggles imperatively on the App root. */
+
+.lcars-type-01 {
+  /* Single header band: title (left) + a scrollable button column (right).
+     Sized to show one button row (1x 50px pill = 50px) before the column starts
+     scrolling, with slack so a single row never trips a sub-pixel scrollbar. */
+  --header-band-height: 64px;
+
+  display: grid;
+  column-gap: 0;
+  row-gap: var(--lcars-gap);
+  height: 100%;
+  /* Screen-edge padding, scoped to the layout (was on .screen) so the
+     full-screen MobileNav overlay can fill the viewport on its own terms. */
+  padding: 10px;
+}
+
+@media screen and (min-width: 1024px) and (min-height: 1024px) {
+  .lcars-type-01 {
+    padding: 20px;
+  }
+}
+
+.screen.XS > .lcars-type-01 {
+  /* small (mobile/PADD) layout */
+  grid-template-columns:
+    [content-start]
+      1fr
+    [content-end];
+  grid-template-rows:
+    [header-start]
+      var(--lcars-xs-title-size)
+    [header-end main-start]
+      minmax(0, 1fr)
+    [main-end footer-start]
+      var(--lcars-xs-title-size)
+    [footer-end];
+  grid-template-areas:
+    "title"
+    "main-content"
+    "footer";
+}
+
+.screen.SM > .lcars-type-01 {
+  grid-template-columns:
+    [sidebar-start]
+      var(--lcars-sidebar-width)
+    [sidebar-end content-start]
+      minmax(0, 1fr)
+    [content-end];
+  grid-template-rows:
+    [header-start]
+      var(--header-band-height)
+      var(--lcars-divider-top-height)
+    [header-end main-start]
+      var(--lcars-divider-bottom-height)
+      auto
+    [main-end];
+  grid-template-areas:
+    "sidebar-top meta-content"
+    "sidebar-top divider"
+    "sidebar-bottom divider"
+    "sidebar-bottom main-content";
+}
+
+.lcars-title {
+  color: var(--lcars-color-a5);
+  /* make actual capital letter height match height of row with a multiplier */
+  font-size: calc(var(--lcars-xs-title-size) * 1.36);
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  /* truncating a string with custom string is not supported in any browser except Firefox */
+  text-overflow: '';
+}
+
+.lcars-title.large {
+  display: none;
+}
+
+.screen.SM .lcars-title.small {
+  display: none;
+}
+
+.screen.SM .lcars-title.large {
+  display: block;
+}
+
+.screen.SM .lcars-title {
+  font-size: calc(var(--lcars-sm-title-size) * 1.25);
+}
+
+.screen.MD .lcars-title {
+  /* make actual capital letter height match height of row with a multiplier */
+  font-size: calc(var(--lcars-title-size) * 1.25);
+}
+
+.lcars-title[data-type="2"] {
+  color: var(--lcars-color-a8);
+}
+
+.sidebar-top {
+  background-color: var(--lcars-color-a6);
+  border-bottom-left-radius: 72px 48px;
+  position: relative;
+  grid-area: sidebar-top;
+  display: none;
+}
+
+.screen.SM .sidebar-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-top::after {
+  content: ' ';
+  background-color: var(--lcars-background);
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 34px;
+  height: calc(100% - var(--lcars-divider-top-height));
+  border-bottom-left-radius: 32px 24px;
+}
+
+.sidebar-bottom {
+  border-top-left-radius: 72px 48px;
+  background-color: var(--lcars-color-a1);
+  position: relative;
+  grid-area: sidebar-bottom;
+  display: none;
+}
+
+.screen.SM .sidebar-bottom {
+  /* A fixed elbow on top, then the nav list pinned to the bottom of the column.
+     The list rests at 75% of the column (leaving empty orange space above it) and
+     only grows toward 100% when the buttons can't shrink any further - see
+     .sidebar-bottom > .sidebar-nav. The list scrolls internally so the orange elbow
+     stays pinned in place. */
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  min-height: 0;
+}
+
+.sidebar-bottom::after {
+  content: ' ';
+  background-color: var(--lcars-background);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 34px;
+  height: calc(100% - var(--lcars-divider-bottom-height));
+  border-top-left-radius: 32px 24px;
+}
+
+/* Black-background wrapper around the nav buttons: its bg fills the flex gaps
+   so the separators read black, while the orange container shows as the elbow. */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lcars-block-gap);
+  background-color: var(--lcars-background);
+}
+
+.sidebar-block {
+  text-align: right;
+  align-items: flex-end; /* Required on Chrome to align stuff in a button */
+  padding: 6px 48px 0px 5px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* Clip labels that are too long to fit the button height instead of letting
+     them spill past the button edge. */
+  overflow: hidden;
+}
+
+.sidebar-top .sidebar-block {
+  background-color: var(--lcars-color-a3);
+  width: 100%;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+/* Wrapper takes the 60% height; its button fills it, with a black gap below. */
+.sidebar-top > .sidebar-nav {
+  height: 60%;
+  flex-shrink: 0;
+  padding-bottom: var(--lcars-block-gap);
+}
+
+.sidebar-top > .sidebar-nav .sidebar-block {
+  flex: 1;
+}
+
+/* Transparent Red Alert "elbow". */
+.sidebar-top > .sidebar-block:last-child {
+  background-color: transparent;
+  height: 60%;
+  justify-content: flex-start;
+}
+
+.sidebar-bottom .sidebar-block {
+  flex-shrink: 0;
+  justify-content: flex-start;
+}
+
+/* Black gap above the first button, separating the list from the elbow.
+   Grows to fill the column so the buttons expand to full height, and scrolls
+   internally when there are more buttons than fit — keeping the elbow fixed. */
+.sidebar-bottom > .sidebar-nav {
+  flex: 0 1 auto;          /* size to height/content instead of filling the column */
+  margin-top: auto;        /* push the list to the bottom; empty space sits up top */
+  height: 75%;             /* base resting height = 75% of the sidebar column */
+  min-height: min-content; /* grow past 75% only when buttons hit their min height */
+  max-height: 100%;        /* never exceed the column; scroll beyond */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding-top: var(--lcars-block-gap);
+}
+
+/* Buttons share the available height equally and grow on tall screens, with a
+   floor so they don't squish on short screens (the column scrolls instead). */
+.sidebar-bottom > .sidebar-nav .sidebar-block {
+  flex: 1 1 0;
+  min-height: 32px;
+}
+
+/* Transparent leading "elbow" spacer — fixed height so the orange elbow curve
+   stays visible above the (now full-height) button list. */
+.sidebar-bottom > .sidebar-block:first-child {
+  background-color: transparent !important;
+  justify-content: flex-end;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.sidebar-block > a {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px 50px 2px 5px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.divider-top {
+  position: relative;
+  grid-row: 3;
+  grid-column: 2;
+  background-color: var(--lcars-color-a6);
+  display: none;
+}
+
+.divider-bottom {
+  position: relative;
+  grid-row: 4;
+  grid-column: 2;
+  background-color: var(--lcars-color-a1);
+  display: none;
+}
+
+.screen.SM .divider-top,
+.screen.SM .divider-bottom {
+  display: block;
+}
+
+.meta-content {
+  grid-area: meta-content;
+  flex-direction: row;
+  align-items: center;
+  display: none;
+}
+
+.screen.SM .meta-content {
+  display: flex;
+}
+
+/* The header title is relocated here (where the numbers grid used to be): a
+   direct flex item on the meta-content line, growing to push the buttons right
+   and left-aligning its text within the band. `text-box: trim-both` crops the
+   line box to the cap height so flex `align-items: center` centers the caps
+   optically — no magic-number nudge. */
+.meta-content > .lcars-title {
+  flex-grow: 1;
+  /* allow shrinking so the header survives narrow desktop widths — the title
+     truncates (overflow: hidden, above) instead of overflowing the buttons */
+  flex-shrink: 1;
+  min-width: 0;
+  text-align: left;
+  text-box: trim-both cap alphabetic;
+}
+
+.buttons-area {
+  display: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: flex-start;
+  gap: var(--lcars-gap);
+  margin-left: 20px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.screen.SM .buttons-area {
+  display: flex;
+}
+
+.buttons-area > :nth-child(5),
+.buttons-area > :nth-child(6) {
+  display: none;
+}
+
+.screen.XL .buttons-area > :nth-child(5),
+.screen.XL .buttons-area > :nth-child(6) {
+  display: inherit;
+}
+
+.main-content {
+  grid-area: main-content;
+  /* Let the cell shrink below its content's intrinsic size (grid items default
+     to min-height: auto) so the XS main row stays within the 100vh budget and
+     the footer/MENU bar isn't pushed off-screen. Articles are long, so the pane
+     scrolls its own overflow instead of stretching the layout. */
+  min-height: 0;
+  /* Keep the cell from being widened by long code lines — content scrolls
+     vertically; horizontal overflow is contained per-element below. */
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  /* Gutter so article text clears the scrollbar instead of butting against it. */
+  padding-right: 14px;
+  /* Light-grey body text for the injected article HTML. */
+  color: var(--lcars-text);
+  /* Break long inline tokens (file paths, URLs) instead of overflowing. Has no
+     effect on <pre> (white-space: pre), which scrolls in its own box instead. */
+  overflow-wrap: anywhere;
+  /* Comfortable reading rhythm for long-form article prose. */
+  line-height: 1.6;
+  /* Readable web-safe font for article prose instead of the condensed LCARS face
+     used by the UI chrome. */
+  font-family: Arial, "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
+}
+
+/* Code, command and keyboard samples use a monospace face so columns line up and
+   commands read as code, not prose. Overrides the prose font inherited from
+   .main-content. */
+.main-content code,
+.main-content pre,
+.main-content kbd,
+.main-content samp {
+  font-family: "Cascadia Code", "Fira Code", Consolas, "SF Mono", "Courier New", monospace;
+}
+
+.screen.SM .main-content {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+/* Breathing room above article headings, scaled to heading level — larger
+   headings get a larger gap. (Reset.css zeroes UA heading margins.) */
+.main-content h1 { margin-top: 2em; }
+.main-content h2 { margin-top: 1.6em; }
+.main-content h3 { margin-top: 1.25em; }
+.main-content h4 { margin-top: 1em; }
+
+/* No leading gap when a heading is the first element in the article. */
+.main-content h1:first-child,
+.main-content h2:first-child,
+.main-content h3:first-child,
+.main-content h4:first-child { margin-top: 0; }
+
+/* Separate body paragraphs with a blank-line gap. (Reset.css zeroes UA <p>
+   margins.) The blockquote :last-child reset below keeps callout inner
+   paragraphs from inheriting this trailing gap. */
+.main-content p { margin-bottom: 1em; }
+
+/* Article links: readable blue on the black pane, amber on hover. */
+.main-content a {
+  color: var(--lcars-link);
+}
+
+.main-content a:hover {
+  color: var(--lcars-link-hover);
+}
+
+/* Article lists: reset.css strips UA markers/indentation globally (to keep the
+   LCARS chrome lists clean); restore them here so article prose reads as lists. */
+.main-content ul,
+.main-content ol {
+  margin: 1em 0;
+  padding-left: 1.5em;
+}
+
+.main-content ul { list-style: disc; }
+.main-content ol { list-style: decimal; } /* honours <ol start="N"> automatically */
+
+.main-content li {
+  margin: 0.35em 0;
+}
+
+/* Nested lists hug their parent item instead of opening a full 1em gap. */
+.main-content li > ul,
+.main-content li > ol {
+  margin: 0.35em 0;
+}
+
+/* Wide content stays within the pane: code blocks, tables and images scroll or
+   shrink inside their own box rather than widening the page. */
+.main-content pre,
+.main-content table {
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+/* Code blocks read as a distinct panel: rounded border and padding set them off
+   from the surrounding prose. */
+.main-content pre {
+  border: 1px solid #8a8794;
+  border-radius: 8px;
+  padding: 0.85em 1em;
+  margin: 1em 0;
+}
+
+/* display: block lets a wide table actually scroll inside its box. */
+.main-content table {
+  display: block;
+  width: max-content;
+}
+
+.main-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Callout blockquotes (💡 tips, ⚠️ warnings, tl;dr;): set apart from body prose
+   with whitespace, a faint warm tint and an LCARS-amber left accent bar. */
+.main-content blockquote {
+  margin: 1.5em 0;
+  padding: 0.85em 1.1em;
+  border-left: 4px solid var(--lcars-color-a5); /* LCARS amber #faa41b */
+  border-radius: 0 4px 4px 0;
+  background: rgb(250 164 27 / 0.08); /* faint amber tint on the black pane */
+}
+
+/* No leading gap when the callout opens the article (most tip blockquotes do). */
+.main-content blockquote:first-child {
+  margin-top: 0;
+}
+
+/* Kill the default top/bottom margins on the callout's own paragraph so the
+   blockquote padding controls the inner spacing. */
+.main-content blockquote > :first-child {
+  margin-top: 0;
+}
+
+.main-content blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* On desktop the article shell's MENU footer is replaced by the sidebar, so it
+   is hidden. Scoped to .lcars-type-01 so it doesn't also hide the FocusFrame
+   footer on screens that observe resizes (e.g. the home page). */
+.screen.SM .lcars-type-01 footer {
+  display: none;
+}

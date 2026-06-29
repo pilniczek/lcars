@@ -1,108 +1,21 @@
-@import 'tailwindcss';
-
 /*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+  ITCSS layer order (low specificity / far reach  →  high specificity / narrow).
+  Later layers win regardless of source/import order, thanks to native @layer.
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
+  settings   — design tokens (custom properties)
+  generic    — resets, box-sizing, font-face
+  elements   — bare HTML element styling
+  objects    — layout primitives (.screen, LCARS grid)
+  components  — UI components (CSS Modules, each wrapped in `@layer components`)
+  utilities  — single-purpose overrides (.bgcolor-*)
 */
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
-}
+@layer settings, generic, elements, objects, components, utilities;
 
-:root {
-  /* Text rendering stuff borrowed from Vite template */
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-  
-  /* Doug Drexler reference colors */
-  --lcars-color-a1: #ec943a;
-  --lcars-color-a2: #eb9870;
-  --lcars-color-a3: #c47d69;
-  --lcars-color-a4: #d29a7f;
-  --lcars-color-a5: #faa41b;
-  --lcars-color-a6: #c082a9;
-  --lcars-color-a7: #9c698a;
-  --lcars-color-a8: #b6a5d1;
-  --lcars-color-a9: #8b72aa;
-
-  /* extrapolated */
-  --lcars-color-ex1: #b73916; /* pointer blinking, warp field output */
-
-  /* old colors - do not use */
-  --lcars-color-b1: #ffff99;
-  --lcars-color-b2: #ffcc66;
-  --lcars-color-b3: #ff9933;
-  --lcars-color-b4: #664466;
-  --lcars-color-b5: #cc99cc;
-  --lcars-color-b6: #99ccff;
-  --lcars-color-b7: #3366cc;
-  --lcars-color-b8: #006699;
-  --lcars-color-black: #090909;
-
-  --lcars-gap: 10px;
-  --lcars-sidebar-width: 185px;
-  --lcars-top-section-height: 215px;
-  --lcars-title-size: 50px;
-  --lcars-sm-title-size: 36px;
-  --lcars-xs-title-size: 24px;
-  --lcars-divider-top-height: 16px;
-  --lcars-divider-bottom-height: 16px;
-
-  --lcars-block-gap: 5px;
-  --lcars-background: var(--lcars-color-black);
-}
-
-html {
-  box-sizing: border-box;
-  font-size: 20px;
-}
-
-html *,
-html *::before,
-html *::after {
-  box-sizing: inherit;
-}
-
-body {
-  background-color: var(--lcars-background);
-  margin: 0;
-  padding: 0;
-  font-family: 'lcars', sans-serif;
-  user-select: none;
-}
-
-html, body {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.screen {
-  height: 100vh;
-  padding: 20px;
-}
-
-@media screen and (min-width: 767px) and (min-height: 767px) {
-  .screen {
-    padding: 30px;
-  }
-}
-
-@media screen and (min-width: 1024px) and (min-height: 1024px) {
-  .screen {
-    padding: 40px 56px;
-  }
-}
+/* Project global layers */
+@import './settings/tokens.css' layer(settings);
+@import './generic/reset.css' layer(generic);
+@import './generic/fonts.css' layer(generic);
+@import './elements/page.css' layer(elements);
+@import './objects/screen.css' layer(objects);
+@import './objects/lcars-layout.css' layer(objects);
+@import './utilities/bgcolor.css' layer(utilities);

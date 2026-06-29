@@ -1,0 +1,48 @@
+<h2 id="get-things-out-of-stash">Get things out of stash</h2>
+<p><code>git stash pop</code> : pops things off the stash and drops the reference</p>
+<p><code>git stash apply</code> : applies things from the stash and keeps the reference</p>
+<h2 id="empty-folder-is-not-commited">Empty folder is not commited.</h2>
+<p>If you need to commit an empty folder, you must insert an empty file <code>.gitkeep</code> into the folder.</p>
+<h2 id="git-reset---merge">git reset --merge</h2>
+<p>You made an unwanted <code>git stash pop</code> on bad branch and conflicts are popping. The solution is:</p>
+<p><code>git reset --merge</code></p>
+<p>The merge state is cleared and conflicts disappear. The stash entry itself is preserved, so you can <code>git stash pop</code> it later.</p>
+<hr>
+<h2 id="git-stash---keep-index--u">git stash --keep-index -u</h2>
+<blockquote>
+<p>tl;dr; <code>stash unstaged changes and untracked files</code></p>
+</blockquote>
+<p><strong>Usecase:</strong> You finished a fix after code review (or you did something forgotten earlier). So you stashed changes and started rebasing... But you notice that changes should be split into two existing commits.</p>
+<p><strong>step-by-step solution</strong></p>
+<ol>
+<li><code>git rebase -i where-u-want</code>
+mark commits as <code>edit</code> and confirm,</li>
+<li><code>git add what-u-need</code>
+(VSCode has a tool that provides <code>git add</code> also for specific rows in a file),</li>
+<li><code>git stash --keep-index -u</code>
+stash what you want to have in the next commit (otherwise, you get an error <em>You must edit all merge conflicts and then mark them as resolved using git add</em>)</li>
+<li><code>git rebase --continue</code></li>
+<li>On the next commit <code>git stash pop</code>
+(resolve conflicts if needed) </li>
+<li><code>git add .</code> </li>
+<li><code>rebase --continue</code></li>
+</ol>
+<p> </p>
+<p>Problem solved. :)</p>
+<hr>
+<h3 id="lostdelete-branch-or-forgotten-work">Lost/delete branch or forgotten work</h3>
+<p>If you delete a branch the easiest way to recover the branch is to checkout to <code>origin/…</code> but that is possible only if the origin exists or if a work in progress has been pushed. If you did not make it to the push you can use <strong>reflog</strong>. Reflog is a logging system of almost all <code>git ...</code> commands.</p>
+<p>When you run <code>git checkout</code>, <code>git rebase</code>, <code>git merge</code>, <code>git branch -d</code>, etc. will record this as a new entry into a log and you can show this log any time you want by running the command <code>git reflog --date=human</code> </p>
+<pre><code>59b6e151 HEAD@{Thu Sep 29 14:57}: commit (amend): Stop refetching data on success BE call
+23be8ec2 HEAD@{Thu Sep 29 14:57}: commit: Stop refetching data on success BE call
+8c7e37bb (HEAD -&gt; dev, synetech-gl/dev, origin/dev) HEAD@{Thu Sep 29 14:56}: checkout: moving from dev to feature/optimistic-updates
+8c7e37bb (HEAD -&gt; dev, synetech-gl/dev, origin/dev) HEAD@{Wed Sep 21 15:33}: pull: Fast-forward
+0489f718 HEAD@{Wed Sep 21 15:33}: checkout: moving from feature/use-react-suspend-feature to dev
+c0108afb (origin/fix/32145-unnecessary-multiple-be-calls, fix/32145-unnecessary-multiple-be-calls, feature/use-react-suspend-feature) HEAD@{Tue Sep 13 08:53}: checkout: moving from fix/32145-unnecessary-multiple-be-calls to feature/use-react-suspend-feature
+c0108afb (origin/fix/32145-unnecessary-multiple-be-calls, fix/32145-unnecessary-multiple-be-calls, feature/use-react-suspend-feature) HEAD@{Fri Sep 9 15:06}: rebase (continue) (finish): returning to refs/heads/fix/32145-unnecessary-multiple-be-calls
+c0108afb (origin/fix/32145-unnecessary-multiple-be-calls, fix/32145-unnecessary-multiple-be-calls, feature/use-react-suspend-feature) HEAD@{Fri Sep 9 15:06}: rebase (continue): Remove unused useDPSDetail hook
+fadf7397 HEAD@{Fri Sep 9 15:05}: rebase (pick): Replace useDPSDetail hook with universal usePensionHook
+0489f718 HEAD@{Fri Sep 9 15:05}: rebase (start): checkout dev
+374c8dad HEAD@{Fri Sep 9 15:05}: checkout: moving from dev to fix/32145-unnecessary-multiple-be-calls
+</code></pre>
+<p>At the start of a line, you can see hash followed by the human readable date and time followed by command followed by the title of commit under the hash. Important for you is the hash (for this case it is 0489f718 from Fri Sep 9 15:05) at the start which you can <code>git checkout -b MY_DELETED_BRANCH 0489f718</code> and your work is back in the game.</p>

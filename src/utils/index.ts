@@ -1,4 +1,4 @@
-import { Ref } from 'vue'
+import type { RefObject } from 'react'
 
 /**
  * Makes a random number string for labels etc. Although it uses
@@ -18,8 +18,8 @@ import { Ref } from 'vue'
  */
 export function makeRandomNumber (
   digits: number,
-  padded: boolean,
-  spread: boolean | number,
+  padded?: boolean,
+  spread?: boolean | number,
 ): string {
   if (!digits) {
     digits = 6
@@ -48,23 +48,6 @@ export function makeRandomNumber (
   }
 
   return number
-}
-
-export function makeRandomLetters (letters: number): string {
-  if (!letters) {
-    letters = 3
-  }
-  
-  // Don't pick I or O? (unless we find visual proof these are used)
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ'
-
-  let set = ''
-  for (let i = 0; i < letters; i++) {
-    const pick = Math.floor(Math.random() * chars.length)
-    set = set + chars.charAt(pick)
-  }
-
-  return set
 }
 
 export function pickRandom <T> (array: ReadonlyArray<T>): T {
@@ -120,7 +103,7 @@ export function throttle (func: Function, timeFrame: number) {
 }
 
 export function startAnimation(
-  ref: Ref,
+  ref: RefObject<HTMLElement | null>,
   minValue: number,
   maxValue: number,
   minDuration: number,
@@ -136,7 +119,7 @@ export function startAnimation(
 }
 
 function setNextAnimation(
-  ref: Ref,
+  ref: RefObject<HTMLElement | null>,
   minValue: number,
   maxValue: number,
   minDuration: number,
@@ -147,29 +130,16 @@ function setNextAnimation(
   const duration = getRandomRange(minDuration, maxDuration)
 
   // If ref has unmounted, halt
-  if (!ref.value) {
+  if (!ref.current) {
     return
   }
 
-  ref.value.style.setProperty('--animate-to-position', `${value}%`)
-  ref.value.style.setProperty('--animate-duration', `${duration}ms`)
+  ref.current.style.setProperty('--animate-to-position', `${value}%`)
+  ref.current.style.setProperty('--animate-duration', `${duration}ms`)
 
   if (infinite) {
     window.setTimeout(() => {
       setNextAnimation(ref, minValue, maxValue, minDuration, maxDuration, true)
     }, duration)
   }
-}
-
-// The modern Fisher-Yates shuffle algorithm
-// https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
-export function shuffle<T> (a: Array<T>): Array<T> {
-  let j, x, i
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1))
-    x = a[i]
-    a[i] = a[j]
-    a[j] = x
-  }
-  return a
 }

@@ -1,0 +1,65 @@
+@layer components {
+  .outputColumn {
+    display: flex;
+    position: relative;
+    flex-basis: 15%;
+    justify-content: flex-end;
+
+    &.placeRight {
+      justify-content: flex-start;
+    }
+
+    .column {
+      width: 60%;
+      height: 100%;
+      background-color: var(--output-frame-color);
+    }
+  }
+
+  .indicator {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    height: 58%;
+    width: 100%;
+    color: var(--pointer-color);
+    top: var(--animate-to-position);
+    transition: top var(--animate-duration) linear;
+  }
+
+  .indicatorEnd {
+    position: relative;
+    aspect-ratio: 1 / 1.1;
+    background-color: var(--output-frame-color);
+    color: var(--output-frame-color);
+  }
+
+  .indicatorBg {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    background-color: var(--lcars-background);
+    z-index: 1;
+    position: relative;
+
+    /* Prevents pointer from getting too big in mobile view */
+    container-type: size;
+  }
+
+  .indicatorPointer {
+    position: absolute;
+    right: 0;
+    width: 175%;
+    aspect-ratio: 2 / 1;
+
+    .placeRight & {
+      left: 0;
+      right: auto;
+    }
+
+    /* Prevents pointer from getting too big in mobile view */
+    @container (max-height: 100px) {
+      width: 100%;
+    }
+  }
+}

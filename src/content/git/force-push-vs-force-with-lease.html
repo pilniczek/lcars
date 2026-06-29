@@ -1,0 +1,11 @@
+<blockquote>
+<p>💡 Never <code>git push --force</code>. Use <code>git push --force-with-lease</code> - it refuses the push if the remote moved since your last <code>fetch</code>, so you can&#39;t accidentally overwrite a teammate&#39;s commit.</p>
+</blockquote>
+<h2 id="the-problem">The problem</h2>
+<p><code>--force</code> replaces the remote branch unconditionally. If a teammate pushed in the meantime, their commit is gone - only their local reflog still has it. No warning, no chance to react.</p>
+<h2 id="what-we-use">What we use</h2>
+<pre><code class="language-ini">[alias]
+    pf = push --force-with-lease
+</code></pre>
+<p>Then just <code>git pf</code> instead of <code>git push --force</code>. On a shared branch where someone else pushed, it fails - that&#39;s the signal to <code>fetch</code> and investigate, not to retry with <code>--force</code>.</p>
+<p>See <a href="/git/config/configuration-example">Config Example</a>.</p>

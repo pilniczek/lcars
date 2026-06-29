@@ -1,0 +1,11 @@
+<blockquote>
+<p>💡 Makes <code>git pull</code> rebase your local commits on top of upstream instead of creating a useless merge commit.</p>
+</blockquote>
+<h2 id="the-problem">The problem</h2>
+<p>Default <code>git pull</code> = <code>fetch</code> + <code>merge</code>. If you have local commits <em>and</em> upstream moved, every pull produces a junk merge commit like <code>Merge branch &#39;master&#39; of origin into master</code>. History turns into a knot.</p>
+<h2 id="what-the-settings-do">What the settings do</h2>
+<pre><code class="language-ini">[pull]
+    rebase = true
+</code></pre>
+<p>Now <code>git pull</code> = <code>fetch</code> + <code>rebase</code>. Your local commits are replayed on top of the new upstream tip. Linear history, no junk merges. Matches the team&#39;s <a href="/git/usage/strategy">Strategy</a>.</p>
+<p>See <a href="/git/config/configuration-example">Config Example</a>.</p>

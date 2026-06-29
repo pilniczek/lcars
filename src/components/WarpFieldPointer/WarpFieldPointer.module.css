@@ -1,0 +1,37 @@
+@layer components {
+  .pointerContainer {
+    display: flex;
+    flex-direction: row;
+    gap: var(--lcars-block-gap);
+    color: var(--pointer-color);
+    position: absolute;
+    top: var(--animate-to-position);
+    transition: top var(--animate-duration) linear;
+  }
+
+  .pointerLeft {
+    flex-grow: 1;
+  }
+
+  .pointerRight {
+    flex-grow: 1;
+  }
+
+  .pointerRight svg {
+    transform: rotate(180deg);
+  }
+
+  .pointerBlink {
+    animation: 0.35s steps(2, jump-none) infinite alternate pointer-blink;
+  }
+
+  @keyframes pointer-blink {
+    from {
+      color: var(--pointer-color);
+    }
+
+    to {
+      color: var(--pointer-blink-color, red);
+    }
+  }
+}

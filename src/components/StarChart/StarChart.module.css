@@ -1,0 +1,245 @@
+@layer components {
+  .starChart {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .interstellarClouds {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    animation-duration: 120s;
+    animation-name: pan-right-and-back-3;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  .interstellarClouds canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .gridContainer {
+    position: absolute;
+    width: 240%;
+    min-height: 120%;
+    left: -10%;
+    top: -10%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25vw, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(25vw, 1fr));
+    animation-duration: 120s;
+    animation-name: pan-right-and-back-1;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  .starChart:global(.SM) .gridContainer {
+    grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(20vw, 1fr));
+  }
+
+  .starChart:global(.LG) .gridContainer {
+    grid-template-columns: repeat(auto-fit, minmax(10vw, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(10vw, 1fr));
+  }
+
+  .gridItem {
+    border-left: 1px solid var(--lcars-color-a3);
+    border-bottom: 1px solid var(--lcars-color-a3);
+    padding: 10px;
+    color: var(--lcars-color-a4);
+    min-height: 20vw;
+    opacity: 0.75;
+  }
+
+  .starChart:global(.LG) .gridItem {
+    min-height: 10vw;
+  }
+
+  .starsContainer,
+  .labelContainer {
+    position: absolute;
+    width: 240%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    animation-duration: 120s;
+    animation-name: pan-right-and-back-2;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  .backgroundStar,
+  .labeledStar {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .backgroundStar {
+    background-color: var(--lcars-color-a5);
+  }
+
+  .labeledStarContainer {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .select {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .selectLeft {
+    position: absolute;
+    left: 0;
+    height: 75%;
+    width: 10px;
+    overflow: hidden;
+  }
+
+  .selectRight {
+    position: absolute;
+    right: 0;
+    height: 75%;
+    width: 10px;
+    overflow: hidden;
+  }
+
+  .selectBracket {
+    position: absolute;
+    height: 100%;
+    width: 40px;
+    border: 5px solid var(--lcars-color-b2);
+    border-radius: 12px / 8px;
+  }
+
+  .selectLeft .selectBracket {
+    left: 0;
+  }
+
+  .selectRight .selectBracket {
+    right: 0;
+  }
+
+  .labeledStar {
+    background-color: var(--lcars-color-a1);
+  }
+
+  .label.collide {
+    border: 1px solid red;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .starLabel {
+    display: flex;
+    position: absolute;
+    height: 40px;
+    align-items: center;
+  }
+
+  .labelText {
+    color: var(--lcars-color-a8);
+    text-transform: uppercase;
+    white-space: nowrap;
+    height: 40px;
+    font-size: 2em;
+    margin-left: 0.2em;
+    /* Manual vertical alignment */
+    line-height: 1.25;
+  }
+
+  /* By default, only show half of stars.
+     As screen size gets bigger, progressively display more */
+  .backgroundStar:nth-child(2n) {
+    display: none;
+  }
+
+  .starChart:global(.MD) .backgroundStar:nth-child(2n) {
+    display: inherit;
+  }
+
+  /* hack: tweak label line-height on the smallest layout */
+  :global(.screen.XS:not(.SM)) .labelText {
+    line-height: 47px;
+  }
+
+  @keyframes pan-right-and-back-1 {
+    from {
+      transform: translateX(0);
+    }
+
+    48% {
+      transform: translateX(-50%);
+    }
+
+    50% {
+      transform: translateX(-50%);
+    }
+
+    98% {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pan-right-and-back-2 {
+    from {
+      transform: translateX(0);
+    }
+
+    48% {
+      transform: translateX(-40%);
+    }
+
+    50% {
+      transform: translateX(-40%);
+    }
+
+    98% {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pan-right-and-back-3 {
+    from {
+      transform: translateX(0);
+    }
+
+    48% {
+      transform: translateX(-30%);
+    }
+
+    50% {
+      transform: translateX(-30%);
+    }
+
+    98% {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+}

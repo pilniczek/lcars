@@ -1,0 +1,15 @@
+<blockquote>
+<p>💡 Makes GIT open VSCode for commit messages, interactive rebases, and conflict markers instead of dropping you into vim or nano.</p>
+</blockquote>
+<h2 id="the-problem">The problem</h2>
+<p>When GIT needs you to edit text - a commit message without <code>-m</code>, an interactive rebase todo list, a merge conflict prompt - it launches its default editor. On most machines that is <code>vim</code> or <code>nano</code>, and if you don&#39;t live in vim you get stuck in a modal editor with no obvious way out.</p>
+<h2 id="what-the-settings-do">What the settings do</h2>
+<pre><code class="language-ini">[core]
+    editor = code --wait
+</code></pre>
+<p>Now GIT opens the file in VSCode. The <code>--wait</code> flag is the critical part: it tells <code>code</code> to block until you close the tab, so GIT waits for you to finish editing instead of seeing an instantly-returned empty file and aborting.</p>
+<p>If <code>code</code> isn&#39;t on your <code>PATH</code> (common on Windows), point at the full path instead:</p>
+<pre><code class="language-ini">[core]
+    editor = &quot;C:\\Users\\__PLACEHOLDER_USER__\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code&quot; --wait
+</code></pre>
+<p>See <a href="/git/config/configuration-example">Config Example</a>.</p>

@@ -1,0 +1,11 @@
+<blockquote>
+<p>💡 Resolve a merge conflict once; git replays the same resolution next time the identical conflict appears. Saves repeating yourself on long rebases and cherry-picks across branches.</p>
+</blockquote>
+<h2 id="the-problem">The problem</h2>
+<p>Rebasing the same long-lived branch on <code>master</code> repeatedly means resolving the <strong>same</strong> conflict over and over. Same for cherry-picking a fix across release branches.</p>
+<h2 id="what-the-settings-do">What the settings do</h2>
+<pre><code class="language-ini">[rerere]
+    enabled = true
+</code></pre>
+<p><code>rerere</code> = <strong>reuse recorded resolution</strong>. Git stores the conflict + your fix in <code>.git/rr-cache/</code> and auto-applies it when the same conflict reappears. You still <code>git add</code> to confirm.</p>
+<p>See <a href="/git/config/configuration-example">Config Example</a>.</p>

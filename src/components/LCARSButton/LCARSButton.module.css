@@ -1,0 +1,89 @@
+@layer components {
+  .button {
+    --button-width: 90px;
+    --button-height: 50px;
+
+    appearance: none;
+    position: relative;
+    width: var(--button-width);
+    height: var(--button-height);
+    border-radius: calc(var(--button-height) / 2);
+    border-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    text-align: right;
+    padding: 0.10em 20px;
+
+    font-family: 'lcars', sans-serif;
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+
+  .button:disabled {
+    opacity: 0;
+  }
+
+  /* Active section button: inverted (black fill, accent text + frame), mirroring
+     the sidebar's active article style. `!important` in the `components` layer
+     beats the `bgcolor-*` utilities (for important declarations the layer cascade
+     is inverted, so earlier layers win). */
+  .active {
+    background-color: var(--lcars-background) !important;
+    color: var(--active-accent) !important;
+  }
+
+  /* Frame drawn as a pseudo-element following the pill's rounded corners. */
+  .active::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--active-accent);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  :global(.bgcolor-1).active {
+    --active-accent: var(--lcars-color-a1);
+  }
+  :global(.bgcolor-2).active {
+    --active-accent: var(--lcars-color-a2);
+  }
+  :global(.bgcolor-3).active {
+    --active-accent: var(--lcars-color-a3);
+  }
+  :global(.bgcolor-4).active {
+    --active-accent: var(--lcars-color-a4);
+  }
+  :global(.bgcolor-5).active {
+    --active-accent: var(--lcars-color-a5);
+  }
+  :global(.bgcolor-6).active {
+    --active-accent: var(--lcars-color-a6);
+  }
+  :global(.bgcolor-7).active {
+    --active-accent: var(--lcars-color-a7);
+  }
+  :global(.bgcolor-8).active {
+    --active-accent: var(--lcars-color-a8);
+  }
+  :global(.bgcolor-9).active {
+    --active-accent: var(--lcars-color-a9);
+  }
+
+  .buttonSquare {
+    border-radius: 0;
+  }
+
+  .buttonRoundedLeft {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .buttonRoundedRight {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}

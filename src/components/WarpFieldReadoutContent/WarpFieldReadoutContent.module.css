@@ -1,0 +1,93 @@
+@layer components {
+  .readoutContainer {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+
+    padding-left: 8%;
+
+    &.placeRight {
+      padding-left: 0;
+      padding-right: 8%;
+    }
+  }
+
+  .placeRight {
+    flex-direction: row-reverse;
+  }
+
+  .readoutLabels {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 55%;
+    justify-content: space-between;
+    color: var(--readout-color-1);
+  }
+
+  .readoutLabel {
+    position: relative;
+    display: flex;
+    justify-content: center;
+
+    > span {
+      width: 50%;
+      line-height: 0.6;
+      background-color: var(--lcars-background);
+      margin-top: 5px;
+      padding-left: 15%;
+    }
+
+    &::before {
+      content: ' ';
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      z-index: -1;
+      border-top: 1px solid var(--readout-color-1);
+    }
+  }
+
+  .readoutMeter {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-basis: 45%;
+    gap: var(--lcars-block-gap);
+    border-top: 1px solid var(--readout-color-1);
+    border-bottom: 1px solid var(--readout-color-1);
+  }
+
+  .ruleA {
+    flex: 1;
+    background-color: var(--readout-color-1);
+  }
+
+  .ruleB {
+    flex: 1.4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px 0;
+    background-color: var(--readout-color-2);
+  }
+
+  .ruleBGap {
+    width: 100%;
+    height: var(--lcars-block-gap);
+
+    &:not(:first-child):not(:last-child) {
+      background-color: var(--lcars-background);
+    }
+  }
+
+  .readoutPointers {
+    position: absolute;
+    width: 47%;
+    left: 34%;
+
+    .placeRight & {
+      left: auto;
+      right: 34%;
+    }
+  }
+}

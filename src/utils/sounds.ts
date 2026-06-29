@@ -37,3 +37,9 @@ export function initSounds () {
     volume: 0.1
   })
 }
+
+// Single feedback sound for every navigation and button click, so the choice
+// of sound lives in one place.
+export function playClick () {
+  sounds.panelBeep14.play()
+}

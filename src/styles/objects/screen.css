@@ -1,0 +1,6 @@
+/* OBJECTS — the reusable full-viewport screen container.
+   Padding lives on the layout (.lcars-type-01), not here, so the full-screen
+   MobileNav overlay — a fixed sibling — isn't boxed in by it. */
+.screen {
+  height: 100vh;
+}

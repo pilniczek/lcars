@@ -1,0 +1,149 @@
+<p>A template <code>.gitconfig</code> for any developer.</p>
+<blockquote>
+<p>⚠️ <strong>Don&#39;t run <code>git config ...</code> commands</strong> to apply these settings. Open your <code>.gitconfig</code> file in an editor, paste the template below, and edit it by hand. The config has structure, comments, and aliases that round-trip cleanly through manual edits - the <code>git config</code> CLI fights it on all three.</p>
+</blockquote>
+<h2 id="where-the-file-lives">Where the file lives</h2>
+<ul>
+<li><strong>Windows</strong>: <code>C:\Users\&lt;user&gt;\.gitconfig</code></li>
+<li><strong>Windows WSL</strong>: <code>\\wsl$\Ubuntu-&lt;version&gt;\home\&lt;user&gt;\.gitconfig</code></li>
+<li><strong>Linux / macOS</strong>: <code>~/.gitconfig</code> (i.e. <code>/home/&lt;user&gt;/.gitconfig</code> or <code>/Users/&lt;user&gt;/.gitconfig</code>)</li>
+</ul>
+<p>If the file doesn&#39;t exist yet, create it. Then paste the template below and replace every <code>__PLACEHOLDER__</code> with your value.</p>
+<h2 id="gitconfig-template">.gitconfig template</h2>
+<pre><code class="language-ini">[user]
+	name = __PLACEHOLDER_NAME__
+	email = __PLACEHOLDER_EMAIL__
+	# only needed when signing commits with GPG
+	signingkey = __PLACEHOLDER_GPG_KEY__
+
+[apply]
+	whitespace = nowarn
+
+[push]
+	default = current
+
+[core]
+	# windows -&gt; true, linux -&gt; input
+	autocrlf = input
+	safecrlf = false
+	ignorecase = false
+	compression = 1
+	# allow long paths on Windows
+	longpaths = true
+	# excludesfile = /Users/__PLACEHOLDER_USER__/.gitignore_global
+	# VSCode as default editor
+	editor = code --wait
+	# editor = &quot;C:\\Users\\__PLACEHOLDER_USER__\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code&quot; --wait
+
+[remote &quot;origin&quot;]
+	# git push -&gt; push current HEAD into tracked remote branch
+	push = HEAD
+
+[diff]
+	mnemonicprefix = true
+	tool = vscode
+
+[difftool &quot;vscode&quot;]
+	cmd = code --wait --diff $LOCAL $REMOTE
+
+[merge]
+	tool = vscode
+
+[mergetool &quot;vscode&quot;]
+	cmd = code --wait $MERGED
+
+[pull]
+	rebase = true
+
+[rerere]
+	enabled = true
+
+# personal preferences will follow
+[alias]
+	# rebase feature branch onto current branch (typically release branch)
+	rebm = !sh -c &#39;echo rebasing branch \&quot;$0\&quot; on top of \&quot;$1\&quot; &amp;&amp; git checkout \&quot;$0\&quot; &amp;&amp; git pull origin \&quot;$0\&quot; &amp;&amp; git rebase \&quot;$1\&quot; &amp;&amp; git checkout \&quot;$1\&quot; &amp;&amp; git merge \&quot;$0\&quot; &amp;&amp; echo all done&#39;
+	f = fetch
+	# updates your branch with upstream (if fast-forward is possible)
+	ff = !git merge --ff-only `git rev-parse --symbolic-full-name --abbrev-ref=strict HEAD@{u}`
+	# squash x commits onto first of them
+	sq = !sh -c &#39;git reset --soft HEAD~\&quot;$0\&quot; &amp;&amp; git commit --amend&#39;
+	# autosquash all fixup! commits since &lt;base&gt; (no editor), usage: git sqf &lt;base&gt;
+	sqf = !sh -c &#39;GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash \&quot;$0\&quot;&#39;
+	fp = fetch --prune
+	pf = push --force-with-lease
+	# clean-tree only: switch to main (else master), pull + prune, then clean up merged branches
+	sync = &quot;!sh -c &#39;if [ \&quot;$(git rev-parse --git-dir)\&quot; != \&quot;$(git rev-parse --git-common-dir)\&quot; ]; then echo \&quot;linked worktree - skipping branch sync\&quot;; elif [ -n \&quot;$(git status --porcelain)\&quot; ]; then echo \&quot;WIP - skipping branch update\&quot;; elif git show-ref -q --verify refs/remotes/origin/main; then git checkout main &amp;&amp; git pull &amp;&amp; git fp &amp;&amp; git merged; elif git show-ref -q --verify refs/remotes/origin/master; then git checkout master &amp;&amp; git pull &amp;&amp; git fp &amp;&amp; git merged; else echo \&quot;no main/master - nothing to update\&quot;; fi&#39;&quot;
+	st = status
+	cm = commit
+	cmp = commit --amend --no-edit
+	# create a fixup! commit targeting &lt;sha&gt;, usage: git fixup &lt;sha&gt;
+	fixup = commit --fixup
+	br = branch
+	co = checkout
+	cp = cherry-pick
+	df = diff
+	rb = rebase
+	rbi = rebase -i
+	rbc = rebase --continue
+	rh = reset --hard
+	su = submodule update
+	# graph for current branch
+	l  = log --graph --decorate --pretty=oneline --abbrev-commit
+	# graph for all branches
+	ll = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	# log for current branch showing diffs (-m is for showing mergecommits too)
+	ld = log -p -m
+	# log for current branch showing summary of changed files (-m is for showing mergecommits too)
+	ls = log --stat -m
+	# number of commits per author
+	stats = shortlog -n -s --no-merges
+	# remove remote branch (remote must be named origin), usage: git rmb test
+	rmb = !sh -c &#39;git push origin :$1&#39; -
+	# shows local &gt; tracked remote
+	brt = for-each-ref --format=\&quot;%(refname:short) &gt; %(upstream:short)\&quot; refs/heads
+	# get upstream tracked branch or error
+	brtracked = rev-parse --symbolic-full-name --abbrev-ref=strict HEAD@{u}
+	# commit all changes to a WIP commit
+	wip = !git add --all &amp;&amp; git commit -m WIP --no-verify &amp;&amp; git pf
+	# stash everything incl. untracked but keep staged changes in working tree
+	ski = stash --keep-index -u
+	# undo last commit
+	cm-undo = reset HEAD~
+	# special branches
+	release = push origin HEAD:release
+	selenium = push origin HEAD:selenium
+	test = push origin HEAD:test
+	# remove merged branches
+	merged = !sh -c &#39;git branch --merged | egrep -v \&quot;(^\\*|master|main|dev)\&quot; &gt;/tmp/merged-branches &amp;&amp; echo \&quot;waiting for git merged confirmation - review the list and close the IDE tab to continue\&quot; &amp;&amp; code --wait /tmp/merged-branches 2&gt;/dev/null &amp;&amp; xargs git branch -d &lt;/tmp/merged-branches&#39;
+
+[color]
+	ui = auto
+[color &quot;branch&quot;]
+	current = yellow reverse
+	local = yellow
+	remote = green
+[color &quot;diff&quot;]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+[color &quot;status&quot;]
+	added = green
+	changed = yellow
+	untracked = cyan
+</code></pre>
+<h2 id="settings-reference">Settings reference</h2>
+<p>Key settings explained - read it before you change it locally:</p>
+<ol>
+<li><strong><code>[remote &quot;origin&quot;] push = HEAD</code></strong> → <a href="/git/config/push-head">Push current</a></li>
+<li><strong><code>[pull] rebase = true</code></strong> → <a href="/git/config/pull-rebase">Clean pulls</a></li>
+<li><strong><code>[rerere] enabled = true</code></strong> → <a href="/git/config/git-rerere">Repeated conflicts</a></li>
+<li><strong><code>[core] autocrlf</code> / <code>safecrlf</code></strong> → <a href="/git/config/autocrlf">Safe line endings</a></li>
+<li><strong><code>[alias] pf = push --force-with-lease</code></strong> → <a href="/git/config/force-push-vs-force-with-lease">Safe force push</a></li>
+<li><strong><code>[core] editor = code --wait</code></strong> → <a href="/git/config/vscode-editor">GIT editor</a></li>
+<li><strong><code>[alias] wip</code></strong> → <a href="/git/config/git-wip">WIP commits</a></li>
+</ol>
+<h3 id="optional">Optional</h3>
+<ul>
+<li><strong><code>[commit] gpgsign = true</code> / <code>[user] signingkey</code></strong> → <a href="https://pilniczek.github.io/important/gpg-sign-commits">Sign your commits</a></li>
+</ul>

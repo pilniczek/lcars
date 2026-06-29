@@ -1,0 +1,18 @@
+/* ELEMENTS — bare HTML element styling (no classes) */
+body {
+  background-color: var(--lcars-background);
+  margin: 0;
+  padding: 0;
+  font-family: 'lcars', sans-serif;
+}
+
+html,
+body {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  /* Themed scrollbars: inherits to every `scrollbar-width: thin` container so
+     Firefox and modern Chrome (121+) drop their light default bar. */
+  scrollbar-color: var(--lcars-scrollbar-thumb) var(--lcars-scrollbar-track);
+}

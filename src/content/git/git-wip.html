@@ -1,0 +1,17 @@
+<blockquote>
+<p>💡 One command to dump every change into a throwaway <code>WIP</code> commit. Switch branches, pull, or step away without <code>git stash</code> juggling - and it skips hooks, so it&#39;s instant.</p>
+</blockquote>
+<h2 id="the-problem">The problem</h2>
+<p>You&#39;re mid-change and need to switch branches, pull, or just save a checkpoint. <code>git stash</code> works, but the stash list is easy to forget and awkward to read. A plain commit means inventing a message and waiting on pre-commit hooks you don&#39;t care about yet.</p>
+<h2 id="the-alias">The alias</h2>
+<pre><code class="language-ini">[alias]
+    # commit all changes to a WIP commit
+    wip = !git add --all &amp;&amp; git commit -m WIP --no-verify &amp;&amp; git pf
+</code></pre>
+<p><code>git wip</code> stages everything (tracked and untracked) and commits it as <code>WIP</code>. <code>--no-verify</code> skips <a href="/git/usage/husky">Husky</a> and other pre-commit / commit-msg hooks, so the checkpoint is instant. The trailing <code>git pf</code> (<code>push --force-with-lease</code>) also pushes the checkpoint to your tracking branch as an off-machine backup - safe because it only ever overwrites your own branch and never merges anywhere.</p>
+<h2 id="undoing-it">Undoing it</h2>
+<pre><code class="language-bash">git reset HEAD~</code></pre>
+<h2 id="guard-the-pipeline">Guard the pipeline</h2>
+<p>A WIP commit is a private checkpoint, never something to merge. Catch stray ones in CI by failing the pipeline when a <code>WIP</code> commit reaches the branch.</p>
+<h2 id="how-to-set">How to set</h2>
+<p>The alias is already in the shared <a href="/git/config/configuration-example">Config Example</a>.</p>

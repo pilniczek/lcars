@@ -1,0 +1,80 @@
+@layer components {
+  .container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: subgrid;
+  }
+
+  /* Don't know what to call this... just "output" */
+  .output {
+    display: flex;
+    flex-direction: row;
+
+    &.alignRight {
+      flex-direction: row-reverse;
+
+      /* kind of hack, would love to specify this on parent */
+      .outputReadout {
+        --pointer-color: var(--lcars-color-a8);
+      }
+    }
+  }
+
+  .outputReadout {
+    flex-grow: 1;
+  }
+
+  .outputBracket {
+    position: relative;
+    background-color: var(--output-frame-color);
+
+    &::after {
+      content: ' ';
+      position: absolute;
+      /* This needs to match the center bar layout */
+      width: calc(85%);
+      aspect-ratio: 4.25 / 1;
+      background-color: var(--lcars-background);
+    }
+  }
+
+  .bracketTopLeft {
+    border-top-left-radius: var(--output-outer-border-radius);
+
+    &::after {
+      right: 0;
+      bottom: 0;
+      border-top-left-radius: var(--output-inner-border-radius);
+    }
+  }
+
+  .bracketTopRight {
+    border-top-right-radius: var(--output-outer-border-radius);
+
+    &::after {
+      left: 0;
+      bottom: 0;
+      border-top-right-radius: var(--output-inner-border-radius);
+    }
+  }
+
+  .bracketBottomLeft {
+    border-bottom-left-radius: var(--output-outer-border-radius);
+
+    &::after {
+      right: 0;
+      top: 0;
+      border-bottom-left-radius: var(--output-inner-border-radius);
+    }
+  }
+
+  .bracketBottomRight {
+    border-bottom-right-radius: var(--output-outer-border-radius);
+
+    &::after {
+      left: 0;
+      top: 0;
+      border-bottom-right-radius: var(--output-inner-border-radius);
+    }
+  }
+}

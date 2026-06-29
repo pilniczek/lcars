@@ -1,0 +1,126 @@
+@layer components {
+  /* TODO: Consolidate with small title styles */
+  .bar {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: var(--lcars-xs-title-size);
+  }
+
+  .barText {
+    flex-grow: 1;
+  }
+
+  .bar[data-color-scheme="1"] .barText {
+    background-color: var(--lcars-color-a2);
+    color: var(--lcars-color-a5);
+  }
+
+  .bar[data-color-scheme="2"] .barText {
+    background-color: var(--lcars-color-a6);
+    color: var(--lcars-color-a8);
+  }
+
+  /* Yellow/gold scheme — used by the mobile navigation menu bars. */
+  .bar[data-color-scheme="3"] .barText {
+    background-color: var(--lcars-color-a5);
+    color: var(--lcars-color-a5);
+  }
+
+  .bar[data-align="left"] .barText {
+    text-align: left;
+  }
+
+  .bar[data-align="right"] .barText {
+    text-align: right;
+  }
+
+  .barText span {
+    /* make actual capital letter height match height of row with a multiplier */
+    font-size: calc(var(--lcars-xs-title-size) * 1.36);
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    /* Trim the line box to the cap height so the black text box matches the
+       bar height instead of overflowing it — cross-platform, replaces the old
+       Mac-tuned `vertical-align: text-bottom` hack. */
+    text-box: trim-both cap alphabetic;
+
+    background-color: var(--lcars-background);
+  }
+
+  .bar[data-align="left"] .barText span {
+    padding-right: var(--lcars-block-gap);
+  }
+
+  .bar[data-align="right"] .barText span {
+    padding-left: var(--lcars-block-gap);
+  }
+
+  .barLeft {
+    width: var(--lcars-xs-title-size);
+    height: var(--lcars-xs-title-size);
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    margin-right: var(--lcars-block-gap);
+  }
+
+  .barRight {
+    width: var(--lcars-xs-title-size);
+    height: var(--lcars-xs-title-size);
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    margin-left: var(--lcars-block-gap);
+  }
+
+  /* The mobile menu opener: a "MENU" text button typeset like the bar title
+     (see .barText span) so it matches the title's look while staying tappable. */
+  .barMenu {
+    display: flex;
+    align-items: center;
+    margin-left: var(--lcars-block-gap);
+    padding: 0;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+    background-color: transparent;
+  }
+
+  .barMenu span {
+    font-size: calc(var(--lcars-xs-title-size) * 1.36);
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-box: trim-both cap alphabetic;
+    padding-inline: var(--lcars-block-gap);
+    background-color: var(--lcars-background);
+  }
+
+  .bar[data-color-scheme="1"] .barMenu span {
+    color: var(--lcars-color-a5);
+  }
+
+  .bar[data-color-scheme="2"] .barMenu span {
+    color: var(--lcars-color-a8);
+  }
+
+  .bar[data-color-scheme="3"] .barMenu span {
+    color: var(--lcars-color-a5);
+  }
+
+  .bar[data-color-scheme="1"] .barLeft,
+  .bar[data-color-scheme="1"] .barRight {
+    background-color: var(--lcars-color-a3);
+  }
+
+  .bar[data-color-scheme="2"] .barLeft,
+  .bar[data-color-scheme="2"] .barRight {
+    background-color: var(--lcars-color-a7);
+  }
+
+  .bar[data-color-scheme="3"] .barLeft,
+  .bar[data-color-scheme="3"] .barRight {
+    background-color: var(--lcars-color-a5);
+  }
+}

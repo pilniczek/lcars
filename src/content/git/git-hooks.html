@@ -1,0 +1,23 @@
+<p>Hooks are scripts that GIT runs automatically at certain points in its workflow. They let you enforce policies, validate input, or trigger actions around events like committing, merging, or pushing. Every repository ships with sample hooks in the <code>.git/hooks</code> directory (named <code>*.sample</code>); remove the suffix and make the file executable to enable one.</p>
+<p>Because hooks live inside <code>.git/</code>, they are local to a clone and are not committed or distributed with the repository for security reasons. That is exactly the gap the <a href="/git/usage/husky">Husky</a> article solves.</p>
+<h2 id="client-side">Client-side</h2>
+<ul>
+<li><code>applypatch-msg</code></li>
+<li><code>commit-msg</code></li>
+<li><code>fsmonitor-watchman</code></li>
+<li><code>post-applypatch</code></li>
+<li><code>post-checkout</code></li>
+<li><code>post-commit</code></li>
+<li><code>post-index-change</code></li>
+<li><code>post-merge</code></li>
+<li><code>post-rewrite</code></li>
+<li><code>pre-applypatch</code></li>
+<li><code>pre-auto-gc</code></li>
+<li><code>pre-commit</code></li>
+<li><code>pre-merge-commit</code></li>
+<li><code>pre-push</code></li>
+<li><code>pre-rebase</code></li>
+<li><code>prepare-commit-msg</code></li>
+<li><code>sendemail-validate</code></li>
+</ul>
+<p>GIT also has a set of server-side hooks (such as <code>pre-receive</code>, <code>update</code>, and <code>post-receive</code>) that run on the remote when it receives a push. They are used to enforce policies centrally or trigger deployments and CI, but they live on the server rather than in your local clone, so they are out of scope here. You can find the full list, along with the exact arguments each client-side and server-side hook receives, in the official reference: <a href="https://git-scm.com/docs/githooks">https://git-scm.com/docs/githooks</a>.</p>

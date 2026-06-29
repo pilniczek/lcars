@@ -1,0 +1,34 @@
+@layer components {
+  .dividerGrid {
+    /* Parent element controls visibility */
+    display: none;
+    grid-area: divider;
+    /* long bar + end-cap accent, per row */
+    grid-template-columns: 1fr 140px;
+    grid-template-rows: var(--lcars-divider-top-height) var(--lcars-divider-bottom-height);
+    column-gap: var(--lcars-block-gap);
+    row-gap: var(--lcars-gap);
+    width: 100%;
+  }
+
+  /* Visibility is driven by the ResizeObserver-toggled `.screen.SM` ancestor */
+  :global(.screen.SM) .dividerGrid {
+    display: grid;
+  }
+
+  .barTop {
+    background-color: var(--lcars-color-a6);
+  }
+
+  .capTop {
+    background-color: var(--lcars-color-a2);
+  }
+
+  .barBottom {
+    background-color: var(--lcars-color-a1);
+  }
+
+  .capBottom {
+    background-color: var(--lcars-color-a6);
+  }
+}

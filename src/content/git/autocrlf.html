@@ -1,0 +1,20 @@
+<blockquote>
+<p>💡Keeps the repo storing <strong>LF</strong> everywhere, regardless of who works on Windows and who works on Linux/macOS. No more diffs full of <code>^M</code> line-ending noise.</p>
+</blockquote>
+<h2 id="the-problem">The problem</h2>
+<p>Windows editors save files with <strong>CRLF</strong> (<code>\r\n</code>). Linux/macOS save with <strong>LF</strong> (<code>\n</code>). If everyone commits whatever their editor produced:</p>
+<ul>
+<li>A diff that should be 1 line becomes &quot;every line changed&quot;.</li>
+<li><code>git blame</code> points at whoever last opened the file in a different OS.</li>
+</ul>
+<h2 id="what-the-settings-do">What the settings do</h2>
+<pre><code class="language-ini">[core]
+    # windows -&gt; true, linux/mac -&gt; input
+    autocrlf = input
+    safecrlf = false
+</code></pre>
+<p><strong>Result:</strong> the repo always stores LF. What lives in your working tree depends on your OS.</p>
+<h2 id="how-to-set">How to set</h2>
+<p>Already in the shared <a href="/git/config/configuration-example">Config Example</a>. Use <code>autocrlf = input</code> on Linux/macOS and <code>autocrlf = true</code> on Windows.</p>
+<h2 id="when-this-isnt-enough">When this isn&#39;t enough</h2>
+<p><code>autocrlf</code> is a per-developer setting and easy to forget. For repos that <strong>must</strong> stay consistent (open source, shell scripts, CI configs), commit a <code>.gitattributes</code> file with <code>* text=auto eol=lf</code> - that enforces line endings at the repo level instead of trusting every clone.</p>

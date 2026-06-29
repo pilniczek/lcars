@@ -1,0 +1,143 @@
+@layer components {
+  /* Full-screen menu, opened by the title bar's end-cap (see App / LCARSBar).
+     Kept hidden at the SM breakpoint, where the sidebar takes over. */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--lcars-gap);
+    /* Match the layout's screen-edge padding so the Navigation bar lines up
+       with where the real header sits behind the overlay. */
+    padding: 10px;
+
+    background-color: var(--lcars-background);
+    overflow-y: auto;
+  }
+
+  :global(.screen.SM) .overlay {
+    display: none;
+  }
+
+  /* Background comes from the bgcolor-3 utility; the ✕ inherits black. The
+     round button is pinned to the bottom-right of the column-flex overlay. */
+  .close {
+    appearance: none;
+    border: 0;
+    flex-shrink: 0;
+    align-self: flex-end;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  /* Anchors the wheel to the bottom-right of the space below the header. */
+  .stage {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    place-items: end end;
+  }
+
+  /* The circular control wheel, drawn as an SVG: a gold outer ring, a central
+     hub disc, and one coloured ring-wedge per route in the annulus between. */
+  .wheel {
+    display: block;
+    /* Fill the overlay's width up to a cap; the square aspect-ratio sets the
+       height, and the overlay scrolls if the viewport is too short. */
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    aspect-ratio: 1;
+    overflow: visible;
+  }
+
+  /* Outer circle — frames the wheel. */
+  .rim {
+    fill: none;
+    stroke: var(--lcars-color-a5);
+    stroke-width: 1.5;
+  }
+
+  /* One ring-wedge per route. The fill colour is set inline (per-segment LCARS
+     hue, or black when active); this group only carries interaction styling. */
+  .segment {
+    cursor: pointer;
+    transition: filter 120ms ease;
+  }
+
+  .segment:focus {
+    outline: none;
+  }
+
+  .segFill {
+    stroke: none;
+  }
+
+  /* Lift the wedge under the pointer / keyboard focus. */
+  .segment:hover,
+  .segment:focus-visible {
+    filter: brightness(1.12);
+  }
+
+  /* Gold edge while focused via keyboard, so the focused wedge is visible. */
+  .segment:focus-visible .segFill {
+    stroke: var(--lcars-color-a5);
+    stroke-width: 1.5;
+  }
+
+  .labelText {
+    font-family: 'lcars', sans-serif;
+    font-size: 8.5px; /* user units in the 0-200 viewBox */
+    letter-spacing: 0.3px;
+    fill: var(--lcars-background);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Current route: inverted to black (fill set inline) with a gold frame and
+     gold label, like the active sidebar block. */
+  .active .segFill {
+    stroke: var(--lcars-color-a5);
+    stroke-width: 2;
+  }
+
+  .active .labelText {
+    fill: var(--lcars-color-a5);
+  }
+
+  /* Inner circle — the hub disc; also closes the menu. */
+  .hub {
+    cursor: pointer;
+  }
+
+  .hub:focus {
+    outline: none;
+  }
+
+  .hubCircle {
+    fill: var(--lcars-background);
+    stroke: var(--lcars-color-a5);
+    stroke-width: 3;
+    transition: fill 120ms ease;
+  }
+
+  .hub:hover .hubCircle,
+  .hub:focus-visible .hubCircle {
+    fill: #1a1a1a;
+  }
+
+  .hubText {
+    font-family: 'lcars', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    fill: var(--lcars-color-a5);
+    pointer-events: none;
+    user-select: none;
+  }
+}
